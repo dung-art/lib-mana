@@ -6,6 +6,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.lib.manage.constant.GenderEnum;
+import com.lib.manage.constant.UserStatusEnum;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -48,19 +51,16 @@ public class UserInfo extends EntityBase{
 	
 	@Column(name = "gender", nullable = false, insertable = true,updatable = false)
 //	@ValidGender
-	private String gender;// khoong theer sua
+	private GenderEnum gender;// khoong theer sua
 	
 	@Column(name = "phone_number", nullable = false, insertable = true)
-//	@ValidPhoneNumber
 	private String phoneNumber;
 	
 	@Column(name = "email_address", nullable = false, insertable = true)
-//	@ValidEmailAddress
 	private String emailAddress;
 	
 	@Column(name = "status", nullable = false, insertable = true)
-//	@ValidEmailAddress
-	private String status;
+	private UserStatusEnum status;
 	
 	@Column(name = "current_address", nullable = false, insertable = true)
 	@NotNull

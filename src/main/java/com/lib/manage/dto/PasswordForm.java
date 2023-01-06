@@ -1,20 +1,24 @@
 package com.lib.manage.dto;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import com.lib.manage.constant.Constants;
+import com.lib.manage.validator.FieldMatch;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldMatch(first = "password", second = "confirmPassword")
 public class PasswordForm {
-    @NotEmpty
-    @Size(min = 6, max = 8)
+	@NotNull
+	@Pattern(regexp = Constants.PATTERN_PASSWORD)
     private String password;
 
-    @NotEmpty
-    @Size(min = 6, max = 8)
+	@NotNull
+	@Pattern(regexp = Constants.PATTERN_PASSWORD)
     private String confirmPassword;
 }

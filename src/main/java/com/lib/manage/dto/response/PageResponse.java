@@ -1,51 +1,59 @@
 package com.lib.manage.dto.response;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 
-import com.googlecode.jmapper.JMapper;
+import com.lib.manage.dto.BaseResponse;
 
-public class PageResponse<D, S> extends BaseResponse {
-	/**
-		 * 
-		 */
-	private Page<S> page;
-	private List<D> list;
+public class PageResponse<T> extends BaseResponse {
+	 private Page<T> page;
 
-	public PageResponse(Page<S> page, JMapper<D, S> mapper) {
-		this.page = page;
-		list = new ArrayList<>();
-		page.getContent().forEach(s -> list.add(mapper.getDestination(s)));
-	}
+	  public PageResponse(Page<T> page) {
+	    this.page = page;
+	  }
 
-	public List<D> getContent() {
-		return list;
-	}
+	  public int getNumber() {
+	    return page.getNumber();
+	  }
 
-	public int getTotalPages() {
-		return page.getTotalPages();
-	}
+	  public int getSize() {
+	    return page.getSize();
+	  }
 
-	public int getNumberOfElements() {
-		return page.getNumberOfElements();
-	}
+	  public int getNumberOfElements() {
+	    return page.getNumberOfElements();
+	  }
 
-	public int getSize() {
-		return page.getSize();
-	}
+	  public List<T> getContent() {
+	    return page.getContent();
+	  }
 
-	public Sort getSort() {
-		return page.getSort();
-	}
+	  public boolean hasContent() {
+	    return page.hasContent();
+	  }
 
-	public int getNumber() {
-		return page.getNumber();
-	}
+	  public boolean isFirst() {
+	    return page.isFirst();
+	  }
 
-	public long getTotalElements() {
-		return page.getTotalElements();
-	}
+	  public boolean isLast() {
+	    return page.isLast();
+	  }
+
+	  public boolean hasNext() {
+	    return page.hasNext();
+	  }
+
+	  public boolean hasPrevious() {
+	    return page.hasPrevious();
+	  }
+
+	  public int getTotalPages() {
+	    return page.getTotalPages();
+	  }
+
+	  public long getTotalElements() {
+	    return page.getTotalElements();
+	  }
 }

@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.lib.manage.constant.BookConditionEnum;
+import com.lib.manage.constant.BorrowStatusEnum;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,17 +32,23 @@ public class Borrow extends EntityBase{
 
 	@Column(name = "borrow_date", insertable = true)
 	@NotNull
-	private String borrowDate;
-
-	@Column(name = "borrow_time", insertable = true)
+	private String borrowDate; // ngày mượn
+	
+	@Column(name = "condition_borrow", insertable = true)
 	@NotNull
-	private String borrowTime;
+	private BookConditionEnum conditionBorrow ;// tình trạng sách lúc mượn
+
+	@Column(name = "borrow_end_compulsory", insertable = true)
+	@NotNull
+	private String borrowEndCompulsory; // ngày phải trả
 
 	@Column(name = "borrow_end", insertable = true)
-	@NotNull
-	private String borrowEnd;
+	private String borrowEnd; // ngày trả
+	
+	@Column(name = "condition_return", insertable = true)
+	private BookConditionEnum conditionReturn ;// tình trạng sách lúc trả
 
 	@Column(name = "status", insertable = true)
 	@NotNull
-	private Boolean status;
+	private BorrowStatusEnum status;
 }

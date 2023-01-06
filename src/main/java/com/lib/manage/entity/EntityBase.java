@@ -2,6 +2,7 @@ package com.lib.manage.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,7 +11,10 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,24 +27,24 @@ public class EntityBase implements Serializable {
 	private static final int MAXSIZE_ID = 36;
 	@Id
 	@GeneratedValue(generator = "GenerateUUID")
-	@GenericGenerator(name = "GenerateUUID", strategy = "com.lib.manage.common.Validate.GenerateUUID")
+	@GenericGenerator(name = "GenerateUUID", strategy = "com.lib.manage.validator.GenerateUUID")
 	@Column(name = "Id", updatable = false, nullable = false)
 	@NotNull
 	@Size(min = MINSIZE_ID, max = MAXSIZE_ID)
 	private String id;
 
 	private static final long serialVersionUID = 1L;
-	@Column(name = "is_deleted")
-	private Boolean isDeleted = false;
+	@Column(name = "is_disable")
+	private Boolean isDisable;
 
 	@Column(name = "create_user")
 	private String createUser;
 
 	@Column(name = "create_date")
-	private String createDate;
+	private LocalDateTime createDate;
 
 	@Column(name = "modify_date")
-	private String modifyDate;
+	private LocalDateTime modifyDate;
 
 	@Column(name = "modify_user")
 	private String modifiedUser;
@@ -51,13 +55,15 @@ public class EntityBase implements Serializable {
 	@PrePersist
 	public void preInsert() {
 		LocalDateTime nowDateTime = LocalDateTime.now();
-		this.createDate = nowDateTime.toString();
-		this.modifyDate = nowDateTime.toString();
+		this.createDate = nowDateTime;
+		this.modifyDate = nowDateTime;
+		this.createUser = SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 
 	@PreUpdate
 	public void preUpdate() {
 		LocalDateTime nowDateTime = LocalDateTime.now();
-		this.modifyDate = nowDateTime.toString();
+		this.modifyDate = nowDateTime;
+		this.modifiedUser = SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 }

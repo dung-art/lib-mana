@@ -10,8 +10,6 @@ import com.lib.manage.dto.response.SuccessResponse;
 import com.lib.manage.models.account.RequestContext;
 import com.lib.manage.models.account.RequestContextHolder;
 
-
-
 @Component
 public class RequestUtil {
 	public static <T> SuccessResponse<T> ok(T data) {

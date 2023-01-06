@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.lib.manage.constant.BookConditionEnum;
+import com.lib.manage.constant.BookStatusEnum;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,11 +26,16 @@ public class Book extends EntityBase{
 	@Column(name = "book_info_id", insertable = true)
 	@NotNull
 	private String bookInfoId;
+//
+//	@Column(name = "book_code", insertable = true)
+//	@NotNull
+//	private String bookCode;
 
-	@Column(name = "book_code", insertable = true)
+	@Column(name = "book_condition", insertable = true)
 	@NotNull
-	private String bookCode;
+	private BookConditionEnum bookCondition; // tình trạng sách
 
 	@Column(name = "status")
-	private String status;
+	@NotNull
+	private BookStatusEnum status;
 }

@@ -1,27 +1,41 @@
 package com.lib.manage.models.account;
 
 import java.util.Collection;
-import java.util.Collections;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.lib.manage.entity.Account;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CustomAccountDetails implements UserDetails {
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	Account account;
+	  private String id;
+	  private String accountName;
+	  private String displayName;
+	  @JsonIgnore
+	  private String password;
+	  @Setter
+	  @JsonIgnore
+	  private boolean active;
+	  @Setter
+	  @JsonIgnore
+	  private boolean locked;
+	  @Setter
+	  @JsonIgnore
+	  private Collection<GrantedAuthority> authorities;
 
     public static CustomAccountDetails builder() {
         return new CustomAccountDetails();
@@ -29,34 +43,21 @@ public class CustomAccountDetails implements UserDetails {
 	
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	Collection<GrantedAuthority> authorities =  (Collection<GrantedAuthority>) authentication.getAuthorities();
+    	return authorities;
     }
 
     @Override
-    public String getPassword() {
-        return account.getPassword();
+    @JsonIgnore
+    public boolean isEnabled() {
+      return active;
     }
 
     @Override
-    public String getUsername() {
-        return account.getAccountName();
-    }
-    
-    
-    public CustomAccountDetails withPassword(String password) {
-         account.setPassword(password);
-         return this;
-    }
-
-    
-    public CustomAccountDetails withAccountName(String accountName) {
-        account.setAccountName(accountName);
-        return this;
-    }
-    
-    public CustomAccountDetails withAccountType(String accountType) {
-        account.setAccountType(accountType);
-        return this;
+    @JsonIgnore
+    public boolean isAccountNonLocked() {
+      return !locked;
     }
 
     @Override
@@ -65,17 +66,22 @@ public class CustomAccountDetails implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return !account.getIsDeleted();
-    }
+	@Override
+	public String getUsername() {
+		return this.accountName;
+	}
+	  public CustomAccountDetails(String id, String accountName, String displayName, String password, boolean active,
+		      boolean locked) {
+		    super();
+		    this.id = id;
+		    this.accountName = accountName;
+		    this.displayName = displayName;
+		    this.password = password;
+		    this.active = active;
+		  }
 }

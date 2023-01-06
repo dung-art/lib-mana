@@ -15,6 +15,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lib.manage.constant.Constants;
+import com.lib.manage.constant.TokenTypeEnum;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,12 +27,14 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @Entity(name = "Token")
-@Multitenant(MultitenantType.SINGLE_TABLE)
-@TenantDiscriminatorColumn(name = Constants.TENANT_ID_COLUMN, contextProperty = Constants.TENANT_ID_PROP, length = Constants.ID_MAX_LENGTH)
 @Table(name = "security_token")
 @ToString(includeFieldNames = true, callSuper = true)
 public class Token extends EntityBase {
-  private static final int VALUE_MAX_LENGTH = 1024;
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+private static final int VALUE_MAX_LENGTH = 1024;
   private static final int VALUE_MIN_LENGTH = 32;
   @NotNull
   @Enumerated(EnumType.ORDINAL)
@@ -57,7 +61,7 @@ public class Token extends EntityBase {
 
   @JsonIgnore
   @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST,
-      CascadeType.REFRESH }, targetEntity = User.class, fetch = FetchType.LAZY)
+      CascadeType.REFRESH }, targetEntity = Account.class, fetch = FetchType.LAZY)
   @JoinColumn(name = "account_id", insertable = false, updatable = false, referencedColumnName = "id")
   private Account account;
 }
